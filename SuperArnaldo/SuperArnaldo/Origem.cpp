@@ -1,10 +1,12 @@
-//classé principal, utilizada de screpts da professora Rossana.
+//classe principal, utilizada de scripts da professora Rossana, HelloTriangle.
 //Modificado por Matheus Milanezi para o trabalho do grau A da cadeira de Processamento gráfico
 
 #include <iostream>
 #include <string>
 #include <assert.h>
-#include "player.h"
+//#include "player.h"
+#define STB_IMAGE_IMPLEMENTATION //IMPREMENTAÇÃO DA CLASSE STB_IMAGE PARA ADICIONAR TEXTURAS
+#include "stb_image.h"
 
 using namespace std;
 
@@ -25,6 +27,27 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 // Protótipos das funções
 int setupShader();
 int setupGeometry();
+/*
+* // Código fonte do Vertex Shader (em GLSL): ainda hardcoded
+const GLchar* vertexShaderSource = "#version 450\n"
+"layout (location = 0) in vec3 position;\n"
+"void main()\n"
+"{\n"
+//...pode ter mais linhas de código aqui!
+"gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
+"}\0";
+
+//Códifo fonte do Fragment Shader (em GLSL): ainda hardcoded
+const GLchar* fragmentShaderSource = "#version 450\n"
+"uniform vec4 inputColor;\n"
+"out vec4 color;\n"
+"void main()\n"
+"{\n"
+"color = inputColor;\n"
+"}\n\0";
+
+*/
+
 
 // Código fonte do Vertex Shader (em GLSL): ainda hardcoded
 const GLchar* vertexShaderSource = "#version 450\n"
@@ -43,6 +66,43 @@ const GLchar* fragmentShaderSource = "#version 450\n"
 "{\n"
 "color = inputColor;\n"
 "}\n\0";
+
+
+
+
+
+// Código fonte do Vertex Shader (em GLSL): ainda hardcoded
+/*
+const GLchar* vertexShaderSource = "#version 450\n"
+"out vec4 FragColor;\n"
+"in vec3 ourColor;\n"
+"in vec2 TexCoord;\n"
+
+"uniform sampler2D ourTexture;\n"
+
+"void main()\n"
+"{\n"
+
+"FragColor = texture(ourTexture, TexCoord);\n"
+"}\0";
+
+//Códifo fonte do Fragment Shader (em GLSL): ainda hardcoded
+const GLchar* fragmentShaderSource = "#version 450\n"
+"layout (location = 0) in vec3 position;\n"
+"layout(location = 1) in vec3 aColor;\n"
+"layout(location = 2) in vec2 aTexCoord;\n"
+"out vec3 ourColor;\n"
+"out vec2 TexCoord;\n"
+
+"void main()\n"
+"{\n"
+"gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
+"ourColor = aColor;\n"
+"TexCoord = aTexCoord;\n"
+"}\0";
+
+*/
+
 
 // Função MAIN
 int main()
@@ -75,14 +135,14 @@ int main()
 	cout << "OpenGL version supported " << version << endl;
 
 	// Definindo as dimensões da viewport com as mesmas dimensões da janela da aplicação
-	int width, height;
+	int width, height, nCanais;
 	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
+	glViewport(1, 1, width, height);
 
 	// Compilando e buildando o programa de shader
 	GLuint shaderID = setupShader();
 
-	// Gerando um buffer simples, com a geometria de um triângulo
+	// Gerando um buffer simples, com a geometria
 	GLuint VAO = setupGeometry();
 
 	// Enviando a cor desejada (vec4) para o fragment shader
@@ -93,10 +153,37 @@ int main()
 
 	glUseProgram(shaderID);
 
+	GL_TEXTURE_2D;
+	unsigned int textura;
+	glGenTextures(1, &textura);
+	glBindTexture(GL_TEXTURE_2D, textura);
+
+	//int largura, altura, nCanais;
+	//carrega a textura selecionada 
+	unsigned char* data = stbi_load("player_idle.png", &width, &height, &nCanais, 0);
+	//unsigned char* data = stbi_load("inimigo_idle.png", &largura, &altura, &nCanais, 1);
+
 
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
 	{
+
+		
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);//revisar esses parametros se correspondem mesmo.
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);// !
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);// !
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);// !
+
+		if (data) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			std::cout << "Falha ao carregar a textura. Verifique o caminho ou se a textura esta no formato PNG" << std::endl;
+		}
+
 		// Checa se houveram eventos de input (key pressed, mouse moved etc.) e chama as funções de callback correspondentes
 		glfwPollEvents();
 
@@ -122,9 +209,12 @@ int main()
 
 		// Troca os buffers da tela
 		glfwSwapBuffers(window);
+		
 	}
 	// Pede pra OpenGL desalocar os buffers
 	glDeleteVertexArrays(1, &VAO);
+	stbi_image_free(data); //liberado memoria da imagem que foi carregada no mibmap
+
 	// Finaliza a execução da GLFW, limpando os recursos alocados por ela
 	glfwTerminate();
 	return 0;
@@ -206,8 +296,13 @@ int setupGeometry(){
 	glBindTexture(GL_TEXTURE_2D, texture_id[1]);
 	// GL_TEXTURE_2D ==> define que será usada uma textura 2D (bitmaps)
 	// texture_id[CUBE_TEXTURE]  ==> define o número da textura
-	glad_glTexImage2D;
+	//glad_glTexImage2D;
+	/*
 	GL_TEXTURE_2D;
+	unsigned int textura;
+	glGenTextures(1, &textura);
+	glBindTexture(GL_TEXTURE_2D, textura);
+	*/
 
 	// carrega a uma imagem TGA
 	//image_t temp_image;
@@ -218,12 +313,43 @@ int setupGeometry(){
 	// sequencial, já visando mandar para o VBO (Vertex Buffer Objects)
 	// Cada atributo do vértice (coordenada, cores, coordenadas de textura, normal, etc)
 	// Pode ser arazenado em um VBO único ou em VBOs separados
-	GLfloat vertices[] = {
-		-0.5, -0.5, 0.0,
-		 0.5, -0.5, 0.0,
-		 0.0, 0.5, 0.0,
+	//GLfloat vertices[] = {
+	/*float coordTexturas[] = {
+		-0.5f, -0.5f,
+		 0.5f, -0.5f,
+		 0.0f, 0.5f,
 		 //outro triangulo vai aqui
 	};
+	*/
+	float vertices[] = {
+		//posições                  cores           cord de textura
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,       
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,       
+		 -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,       
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f        
+
+
+	};
+	/*
+	int largura, altura, nCanais;
+	//carrega a textura selecionada 
+	unsigned char* data = stbi_load("player_idle", &largura, &altura,&nCanais, 0 );
+	//unsigned char* data = stbi_load("inimigo_idle", &largura, &altura, &nCanais, 1);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);//revisar esses parametros se correspondem mesmo.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);// !
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);// !
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);// !
+
+	if(data){
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, largura, altura, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Falha ao carregar a textura. Verifique o caminho ou se a textura esta no formato PNG" << std::endl;
+	}
+	*/
 
 	GLuint VBO, VAO;
 
@@ -238,7 +364,12 @@ int setupGeometry(){
 	glGenVertexArrays(1, &VAO);
 	// Vincula (bind) o VAO primeiro, e em seguida  conecta e seta o(s) buffer(s) de vértices
 	// e os ponteiros para os atributos 
+
+	//glBindTexture(GL_TEXTURE_2D, textura);
+
 	glBindVertexArray(VAO);
+
+
 	//Para cada atributo do vertice, criamos um "AttribPointer" (ponteiro para o atributo), indicando: 
 	// Localização no shader * (a localização dos atributos devem ser correspondentes no layout especificado no vertex shader)
 	// Numero de valores que o atributo tem (por ex, 3 coordenadas xyz) 
@@ -246,8 +377,8 @@ int setupGeometry(){
 	// Se está normalizado (entre zero e um)
 	// Tamanho em bytes 
 	// Deslocamento a partir do byte zero 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	// Observe que isso é permitido, a chamada para glVertexAttribPointer registrou o VBO como o objeto de buffer de vértice 
 	// atualmente vinculado - para que depois possamos desvincular com segurança
@@ -255,6 +386,9 @@ int setupGeometry(){
 
 	// Desvincula o VAO (é uma boa prática desvincular qualquer buffer ou array para evitar bugs medonhos)
 	glBindVertexArray(0);
+
+	//stbi_image_free(data); //liberado memoria da imagem que foi carregada no mibmap
+
 
 	return VAO;
 }

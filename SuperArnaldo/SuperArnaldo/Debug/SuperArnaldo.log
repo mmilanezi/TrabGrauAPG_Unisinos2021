@@ -1,5 +1,2 @@
 ﻿  Origem.cpp
-C:\Users\Usuario\Desktop\Meus Projetos\PG-GA\TrabGrauAPG_Unisinos2021\dependencies\GLAD\include\glad\glad.h(26,1): fatal error C1189: #error:  OpenGL header already included, remove this include, glad already provides it
-  player.cpp
-C:\Users\Usuario\Desktop\Meus Projetos\PG-GA\TrabGrauAPG_Unisinos2021\dependencies\GLAD\include\glad\glad.h(26,1): fatal error C1189: #error:  OpenGL header already included, remove this include, glad already provides it
-  Gerando Código...
+  SuperArnaldo.vcxproj -> C:\Users\Usuario\Desktop\Meus Projetos\PG-GA\TrabGrauAPG_Unisinos2021\SuperArnaldo\Debug\SuperArnaldo.exe

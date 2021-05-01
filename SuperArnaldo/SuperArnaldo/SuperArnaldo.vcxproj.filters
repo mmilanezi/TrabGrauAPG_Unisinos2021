@@ -24,10 +24,24 @@
     <ClCompile Include="player.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="player.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="texturas\player_idle.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="texturas\inimigo_idle.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
   </ItemGroup>
 </Project>
