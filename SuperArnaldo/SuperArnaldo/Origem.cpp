@@ -1,4 +1,5 @@
-//classé principal, utilizada da classe da professora.
+//classé principal, utilizada de screpts da professora Rossana.
+//Modificado por Matheus Milanezi para o trabalho do grau A da cadeira de Processamento gráfico
 
 #include <iostream>
 #include <string>
@@ -185,8 +186,34 @@ int setupShader()
 	return shaderProgram;
 }
 
-int setupGeometry()
-{
+int setupGeometry(){
+
+	//fazer um objeto com textura
+	// Habilitar o uso de texturas
+	glEnable(GL_TEXTURE_2D);
+	// Definir a forma de armazenamento dos pixels na textura (1= alinhamento por byte)
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	// Definir quantas texturas serão usadas no programa
+	GLuint texture_id[1]; // vetor com os números das texturas
+	glGenTextures(1, texture_id);  // 1 = uma textura;
+									// texture_id = vetor que guarda os números das texturas
+
+	// Definr o número da textura do cubo.
+	texture_id[0] = 1001;
+
+	// Define a textura corrente
+	glBindTexture(GL_TEXTURE_2D, texture_id[1]);
+	// GL_TEXTURE_2D ==> define que será usada uma textura 2D (bitmaps)
+	// texture_id[CUBE_TEXTURE]  ==> define o número da textura
+	glad_glTexImage2D;
+	GL_TEXTURE_2D;
+
+	// carrega a uma imagem TGA
+	//image_t temp_image;
+	//tgaLoad("TCG1.tga", &temp_image, TGA_FREE | TGA_LOW_QUALITY);
+
+
 	// Aqui setamos as coordenadas x, y e z do triângulo e as armazenamos de forma
 	// sequencial, já visando mandar para o VBO (Vertex Buffer Objects)
 	// Cada atributo do vértice (coordenada, cores, coordenadas de textura, normal, etc)
