@@ -29,7 +29,7 @@ void SceneManager::initializeGraphics()
 	glfwInit();
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	window = glfwCreateWindow(width, height, "Hello Sprites", nullptr, nullptr);
+	window = glfwCreateWindow(width, height, "Super arnaldo", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
 	// Set the required callback functions
@@ -73,7 +73,13 @@ void SceneManager::key_callback(GLFWwindow * window, int key, int scancode, int 
 			keys[key] = true;
 		else if (action == GLFW_RELEASE)
 			keys[key] = false;
+
 	}
+	//if (key == GLFW_KEY_W && action == GLFW_PRESS)//pula
+		
+	//if (key == GLFW_KEY_A && action == GLFW_PRESS)//anda para esquerda
+
+	//if (key == GLFW_KEY_D && action == GLFW_PRESS)//anda para direita
 
 	//implementar aqui os comandos do personagem
 
@@ -159,31 +165,31 @@ void SceneManager::setupScene()
 	
 	//Mínimo: posicao e escala e ponteiro para o shader
 	Sprite* obj = new Sprite;
-	obj->setPosition(glm::vec3(400.0f, 300.0f, 0.0));
+	obj->setPosition(glm::vec3(100.0f, 200.0f, 0.0));
 	obj->setDimension(glm::vec3(320.0f, 320.0f, 1.0f)); //note que depois podemos reescalar conforme tamanho da sprite
 	obj->setShader(shader);
 	objects.push_back(obj); //adiciona o primeiro obj
 
 	//Adicionando mais um
 	obj = new Sprite;
-	obj->setPosition(glm::vec3(40.0f, 70.0f, 0.0));
-	obj->setDimension(glm::vec3(320.0f, 32.0f, 1.0f));
+	obj->setPosition(glm::vec3(400.0f, 200.0f, 0.0));
+	obj->setDimension(glm::vec3(320.0f, 320.0f, 1.0f));
 	obj->setShader(shader);
 	objects.push_back(obj); //adiciona o segundo obj
 
 	//Adicionando mais um
 	obj = new Sprite;
 	obj->setPosition(glm::vec3(0.0f, 0.0f, 0.0));
-	obj->setDimension(glm::vec3(128.0f, 64.0f, 1.0f));
+	obj->setDimension(glm::vec3(128.0f, 640.0f, 1.0f));
 	obj->setShader(shader);
 	objects.push_back(obj); //adiciona o terceiro obj
 
 	//Adicionando mais um
 	obj = new Sprite;
 	obj->setPosition(glm::vec3(0.0f, 0.0f, 0.0));
-	obj->setDimension(glm::vec3(128.0f, 64.0f, 1.0f));
+	obj->setDimension(glm::vec3(128.0f, 640.0f, 1.0f));
 	obj->setShader(shader);
-	objects.push_back(obj); //adiciona o terceiro obj
+	objects.push_back(obj); //adiciona o quarto obj
 
 	//Carregamento das texturas (pode ser feito intercalado na criação)
 	//Futuramente, utilizar classe de materiais e armazenar dimensoes, etc
